@@ -1,13 +1,14 @@
 ﻿using ChatMessAPI.Infrastructure.Entities;
 using ChatMessAPI.Infrastructure.Entities.Models;
 using ChatMessAPI.Infrastructure.Helpers;
+using ChatMessAPI.Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace ChatMessAPI.Infrastructure.Repositories
 {
-    public class MessageRepository
+    public class MessageRepository : IMessageRepository
     {
         #region attributes
         private readonly DatabaseHelper _databaseHelper;
@@ -42,12 +43,12 @@ namespace ChatMessAPI.Infrastructure.Repositories
             await messageCollection.InsertOneAsync(messageEntity);
         }
 
-        public async Task<MessageEntity[]> GetMessageList(string pRoom)
+        public async Task<List<MessageEntity>> GetMessageList(string pRoom)
         {
             var messageCollection = GetMessageCollection();
             var filter = Builders<MessageEntity>.Filter.Eq("room", pRoom);
             var messageList = await messageCollection.Find(filter).ToListAsync();
-            return messageList.ToArray();
+            return messageList; 
         }
 
         public async Task  DeleteMessageAsync(string pChatId)
