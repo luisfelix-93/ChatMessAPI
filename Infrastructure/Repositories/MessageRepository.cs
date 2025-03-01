@@ -20,6 +20,9 @@ namespace ChatMessAPI.Infrastructure.Repositories
         }
         #endregion
         #region methods
+        /*
+         * Método para obter a coleção de mensagens
+         */
         private IMongoCollection<MessageEntity> GetMessageCollection()
         {
             var mongoClient = new MongoClient(_databaseHelper.ConnectionString);
@@ -28,7 +31,11 @@ namespace ChatMessAPI.Infrastructure.Repositories
 
             return messageCollection;
         }
-
+        /*
+         * Método para inserir uma mensagem no banco de dados
+         * params: {Message pMessage}
+         * return: {Task}
+         */
         public async Task InsertMessageAsync(Message pMessage)
         {
             var messageCollection = GetMessageCollection();
@@ -42,7 +49,11 @@ namespace ChatMessAPI.Infrastructure.Repositories
             };
             await messageCollection.InsertOneAsync(messageEntity);
         }
-
+        /*
+         * Método para obter a lista de mensagens por sala
+         * params: {string pRoom}
+         * return: {Task<List<MessageEntity>>}
+         */
         public async Task<List<MessageEntity>> GetMessageList(string pRoom)
         {
             var messageCollection = GetMessageCollection();
@@ -50,14 +61,22 @@ namespace ChatMessAPI.Infrastructure.Repositories
             var messageList = await messageCollection.Find(filter).ToListAsync();
             return messageList; 
         }
-
+        /*
+         * Método para deletar uma mensagem no banco de dados
+         * params: {string pChatId}
+         * return: {Task}
+         */
         public async Task  DeleteMessageAsync(string pChatId)
         {
             var messageCollection = GetMessageCollection();
             var filter = Builders<MessageEntity>.Filter.Eq("chatId", pChatId);
             await messageCollection.DeleteOneAsync(filter);
         }
-
+        /*
+         * Método para atualizar uma mensagem no banco de dados
+         * params: {string pChatId, Message pMessage}
+         * return: {Task<MessageEntity>}
+         */
         public async Task<MessageEntity> UpdateMessageUpdate(string pChatId, Message pMessage)
         {
             var messageCollection = GetMessageCollection();

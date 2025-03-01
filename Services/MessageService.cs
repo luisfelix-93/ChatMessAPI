@@ -17,6 +17,11 @@ namespace ChatMessAPI.Services
         }
         #endregion
         #region methods
+        /*
+         * Método para chamar o método de inserção de mensagem do repositório
+         * params : {Message pMessage}
+         * return : {Task<ReturnDTO>}
+         */
         public async Task<ReturnDTO> InsertMessage(Message pMessage)
         {
             ReturnDTO returnDTO = new ReturnDTO
@@ -39,7 +44,11 @@ namespace ChatMessAPI.Services
             }
             return returnDTO;
         }
-
+        /*
+         * Método para chamar o método de recuperação de mensagens por sala do repositório
+         * params: {string pRoom}
+         * return: {Task<ReturnDTO>}
+         */
         public async Task<ReturnDTO> GetMessagesByRoom(string pRoom)
         {
             ReturnDTO returnDTO = new ReturnDTO
@@ -63,7 +72,11 @@ namespace ChatMessAPI.Services
             }
             return returnDTO;
         }
-
+        /*
+         * Método para chamar o método de deleção de mensagem do repositório
+         * params: {string pChatId}
+         * return: {Task<ReturnDTO>}
+         */
         public async Task<ReturnDTO> DeleteMessage(string pChatId)
         {
             ReturnDTO returnDTO = new ReturnDTO
@@ -84,7 +97,11 @@ namespace ChatMessAPI.Services
             }
             return returnDTO;
         }
-
+        /*
+         * Método para chamar o método de atualização de mensagem do repositório
+         * params: {string pChatId, Message pMessage}
+         * return: {Task<ReturnDTO>}
+         */
         public async Task<ReturnDTO> UpdateMessage(string pChatId, Message pMessage)
         {
             ReturnDTO returnDTO = new ReturnDTO
