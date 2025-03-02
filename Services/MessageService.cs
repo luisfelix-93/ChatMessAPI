@@ -2,10 +2,11 @@
 using ChatMessAPI.Infrastructure.Entities.DTO;
 using ChatMessAPI.Infrastructure.Entities.Models;
 using ChatMessAPI.Infrastructure.Repositories.Interfaces;
+using ChatMessAPI.Services.Interfaces;
 
 namespace ChatMessAPI.Services
 {
-    public class MessageService
+    public class MessageService : IMessageService
     {
         #region attributes
         private readonly IMessageRepository _messageRepository;
