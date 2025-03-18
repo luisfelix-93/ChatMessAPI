@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.Configure<DatabaseHelper>(builder.Configuration.GetSection("DatabaseHelper"));
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddControllers();
