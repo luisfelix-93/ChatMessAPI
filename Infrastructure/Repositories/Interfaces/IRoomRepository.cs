@@ -8,6 +8,6 @@ namespace ChatMessAPI.Infrastructure.Repositories.Interfaces
         Task CreateRoomRepository(Room pRoom);
         Task<List<RoomEntity>> GetRoomListRepository();
         Task<RoomEntity> GetRoomByNameRepository(string pNmRoom);
-        Task DeleteRoomByNameRepository(string pNmRoom)
+        Task DeleteRoomByNameRepository(string pNmRoom);
     }
 }

@@ -12,7 +12,9 @@ builder.Services.Configure<DatabaseHelper>(builder.Configuration.GetSection("Dat
 builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IMessageService, MessageService>();
-builder.Services.AddControllers();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Host.ConfigureServices((context, services) =>
