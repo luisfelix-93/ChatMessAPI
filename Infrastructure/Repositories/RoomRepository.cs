@@ -20,6 +20,10 @@ namespace ChatMessAPI.Infrastructure.Repositories
         }
         #endregion
         #region methods
+        /*
+         * Método privado de obtenção de coleção de salas
+         * @returns IMongoCollection<RoomEntity> - entidade de sala
+         */
         private IMongoCollection<RoomEntity> GetRoomCollection()
         {
             var mongoClient = new MongoClient(_databaseHelper.ConnectionString);
@@ -29,7 +33,11 @@ namespace ChatMessAPI.Infrastructure.Repositories
             return room;
 
         }
-
+        /*
+         * Método assíncrono de criação de sala
+         * @param pRoom - Objeto de sala
+         * @returns Task
+         */
         public async Task CreateRoomRepository(Room pRoom)
         {
             var roomCollection = this.GetRoomCollection();
@@ -42,14 +50,21 @@ namespace ChatMessAPI.Infrastructure.Repositories
 
             await roomCollection.InsertOneAsync(room);
         }
-
+        /*
+         * Método assíncrono de listagem de salas
+         * @returns Task<List<RoomEntity>> - entidade de sala
+         */
         public async Task<List<RoomEntity>> GetRoomListRepository()
         {
             var roomCollection = this.GetRoomCollection();
             var roomList = await roomCollection.FindAsync(_ => true);
             return await roomList.ToListAsync();
         }
-
+        /*
+         * Método assíncrono de busca de sala por nome
+         * @param pNmRoom - Nome da sala
+         * @returns Task<RoomEntity> - entidade de sala
+         */
         public async Task<RoomEntity> GetRoomByNameRepository(string pNmRoom)
         {
             var roomCollection = this.GetRoomCollection();
@@ -58,7 +73,11 @@ namespace ChatMessAPI.Infrastructure.Repositories
             var roomEntity = await roomCursor.FirstOrDefaultAsync();
             return roomEntity;
         }
-
+        /*
+         * Método assíncrono de exclusão de sala por nome
+         * @param pNmRoom - Nome da sala
+         * @returns Task
+         */
         public async Task DeleteRoomByNameRepository(string pNmRoom)
         {
             var roomCollection = this.GetRoomCollection();

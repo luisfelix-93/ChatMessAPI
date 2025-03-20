@@ -19,6 +19,11 @@ namespace ChatMessAPI.Services
         }
         #endregion
         #region methods
+        /*
+         * Serviço assíncrono de criação de sala
+         * @param pRoom {Room} - Objeto de sala
+         * @returns Task<ReturnDTO> - objeto de retorno
+         */
         public async Task<ReturnDTO> CreateRoomService(Room pRoom)
         {
             ReturnDTO returnDTO = new ReturnDTO
@@ -41,7 +46,10 @@ namespace ChatMessAPI.Services
             }
             return returnDTO;
         }
-
+        /*
+         * Serviço assíncrono de listagem de salas
+         * @returns Task<ReturnDTO> - objeto de retorno
+         */
         public async Task<ReturnDTO> GetRoomListService()
         {
             ReturnDTO returnDTO = new ReturnDTO
@@ -75,6 +83,11 @@ namespace ChatMessAPI.Services
 
             return returnDTO;
         }
+        /*
+         * Serviço assícrono de busca de sala por nome
+         * @params pRoom {string} - nome da sala
+         * returns Task<ReturnDTO> - objeto de retorno
+         */
         public async Task<ReturnDTO> GetRoomByNameService(string pRoom)
         {
             ReturnDTO returnDTO = new ReturnDTO
@@ -108,7 +121,11 @@ namespace ChatMessAPI.Services
 
             return returnDTO;
         }
-
+        /*
+         * Serviço assíncrono de exclusão de sala por nome
+         * @params pRoom {string} - nome da sala
+         * @returns Task<ReturnDTO> - objeto de retorno
+         */
         public async Task<ReturnDTO> DeleteRoomByNameService(string pRoom)
         {
             ReturnDTO returnDTO = new ReturnDTO
