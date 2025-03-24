@@ -3,6 +3,12 @@ using ChatMessAPI.Infrastructure.Repositories;
 using ChatMessAPI.Infrastructure.Repositories.Interfaces;
 using ChatMessAPI.Services;
 using ChatMessAPI.Services.Interfaces;
+using DotNetEnv;
+
+
+// Carrega primeiro o .env
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 

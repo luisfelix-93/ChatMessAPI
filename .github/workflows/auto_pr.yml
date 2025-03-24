@@ -1,0 +1,58 @@
+name: Auto PR on Push
+
+on:
+    push:
+        branches:
+            - '*' # Monitora todas as branches
+jobs: 
+    create-pr:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Criar Pull Request automaticamente
+              uses: actions/github-script@v6
+              with:
+                script: |
+                    const { GITHUB_REF, GITHUB_TOKEN } = process.env;
+                    const branch = GITHUB_REF.replace('refs/heads/', '');
+                    const baseBranch = 'main';
+
+                    // Ignorar branch main e branches de tags
+                    if (branch === baseBranch || GITHUB_REF.startsWith('refs/tags/')) {
+                        console.log(`Branch ${branch} ignorada`)
+                        return;
+                    }
+                    
+                    // Verificar PRs abertos
+                    const existingPRRs = await github.rest.pulls.list({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        head: branch,
+                        base: baseBranch,
+                        state: 'open'
+                    });
+
+                    if (existingPRs.data.length > 0) {
+                        console.log(`PR existente: ${existingPRs.data[0].html_url}`);
+                        return;
+                    }
+
+                    // Criar Pull Request
+                    try {
+                        const newPR = await github.rest.pulls.create({
+                            owner: context.repo.owner,
+                            repo: context.repo.repo,
+                            title: `[Auto] ${branch} → ${baseBranch}`,
+                            head: branch,
+                            base: baseBranch,
+                            maintainer_can_modify: true,
+                            body: 'Pull Request de finalização de versão. Todas as revisões já foram feitas na fase desenvolvimento de produto. Verificar histórico de commits',
+                            draft: false
+                        });
+                        console.log(`PR Criado: ${newPR.data.html_url}`);
+                    } catch (error) {
+                     core.setFailed(`Erro ao criar o Pull Request: ${error.message}`);
+                    }
+
