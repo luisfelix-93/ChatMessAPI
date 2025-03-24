@@ -10,6 +10,7 @@
         public string? DatabaseName { get; set; }
         public string? MessageCollection { get; set; }
         public string? UserCollection { get; set; }
+        public string? RoomCollection { get; set; }
         #endregion
 
     }
