@@ -30,7 +30,7 @@ jobs:
                 push: true
                 tags: |
                     luisffilho/chatmessapi:latest
-                    luisffilho/chatmessapi:$GITHUB_SHA
+                    luisffilho/chatmessapi:${{ github.sha }}
                 
             - name: Notificar sucesso
               run: echo "Docker build e push finalizado com sucesso"
