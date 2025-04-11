@@ -11,11 +11,13 @@ namespace ChatMessAPI.Services
     {
         #region attributes
         private readonly IRoomRepository _roomRepository;
+        private ILogger<RoomService> _logger;
         #endregion
         #region constructor
-        public RoomService(IRoomRepository roomRepository)
+        public RoomService(IRoomRepository roomRepository, ILogger<RoomService> logger)
         {
             _roomRepository = roomRepository;
+            _logger = logger;
         }
         #endregion
         #region methods
@@ -26,6 +28,7 @@ namespace ChatMessAPI.Services
          */
         public async Task<ReturnDTO> CreateRoomService(Room pRoom)
         {
+            _logger.LogInformation("CreateRoomService => Start");
             ReturnDTO returnDTO = new ReturnDTO
             {
                 Message = "",
@@ -39,10 +42,12 @@ namespace ChatMessAPI.Services
                 returnDTO.Message = "Sala de conversação criada com sucesso";
                 returnDTO.Success = true;
                 returnDTO.ResultObject = pRoom;
+                _logger.LogInformation($"CreateRoomService => Sala criada com sucesso: ResultObject: {pRoom}");
             }
             catch (Exception ex)
             {
                 returnDTO.Message = $"Erro ao criar a sala de conversação, {ex.Message}";
+                _logger.LogInformation($"CreateRoomService => Erro ao criar a sala de conversação: {ex.Message}");
             }
             return returnDTO;
         }
@@ -52,6 +57,7 @@ namespace ChatMessAPI.Services
          */
         public async Task<ReturnDTO> GetRoomListService()
         {
+            _logger.LogInformation("GetRoomListService => Start");
             ReturnDTO returnDTO = new ReturnDTO
             {
                 Message = "",
@@ -68,17 +74,20 @@ namespace ChatMessAPI.Services
                 {
                     returnDTO.Message = "Não foi encontrada salas criadas";
                     returnDTO.Success = true;
-                    return returnDTO;
+
+                    _logger.LogInformation("GetRoomListService => Não foi encontrada salas criadas");
+                    return returnDTO; // Move this line after the log statement
                 }
 
                 returnDTO.ResultObject = roomList;
                 returnDTO.Success = true;
                 returnDTO.Message = "Lista de salas encontrada";
-
+                _logger.LogInformation($"GetRoomListService => {roomList.Count} salas encontradas");
             }
             catch (Exception ex)
             {
                 returnDTO.Message = $"Erro ao buscar as salas de conversação, {ex.Message}";
+                _logger.LogInformation($"GetRoomListService => Erro ao buscar as salas de conversação: {ex.Message}");
             }
 
             return returnDTO;
@@ -108,15 +117,17 @@ namespace ChatMessAPI.Services
                     returnDTO.Success = true;
                     return returnDTO;
                 }
-
+                
                 returnDTO.Success = true;
                 returnDTO.Message = "Sala encontrada!";
                 returnDTO.ResultObject = room;
+                _logger.LogInformation($"GetRoomByNameService => Sala encontrada: {room}");
 
             }
             catch (Exception ex)
             {
                 returnDTO.Message = $"Erro ao buscar a sala de conversação, {ex.Message}";
+                _logger.LogInformation($"GetRoomByNameService => Erro ao buscar a sala de conversação: {ex.Message}");
             }
 
             return returnDTO;
@@ -128,6 +139,7 @@ namespace ChatMessAPI.Services
          */
         public async Task<ReturnDTO> DeleteRoomByNameService(string pRoom)
         {
+            _logger.LogInformation("DeleteRoomByNameService => Start");
             ReturnDTO returnDTO = new ReturnDTO
             {
                 Message = "",
@@ -140,10 +152,12 @@ namespace ChatMessAPI.Services
                 await _roomRepository.DeleteRoomByNameRepository(pRoom);
                 returnDTO.Success = true;
                 returnDTO.Message = "Sala excluida com sucesso!";
+                _logger.LogInformation($"DeleteRoomByNameService => Sala excluida com sucesso: {pRoom}");
             }
             catch (Exception ex)
             {
                 returnDTO.Message = $"Erro excluir a sala de conversação, {ex.Message}";
+                _logger.LogInformation($"DeleteRoomByNameService => Erro ao excluir a sala de conversação: {ex.Message}");
             }
 
             return returnDTO;
