@@ -4,6 +4,7 @@ using ChatMessAPI.Infrastructure.Repositories.Interfaces;
 using ChatMessAPI.Services;
 using ChatMessAPI.Services.Interfaces;
 using DotNetEnv;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Grafana.Loki;
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
 
 var corsPolicy = "_myAllowSpecificOrigins";
@@ -73,7 +75,26 @@ builder.Host.ConfigureServices((context, services) =>
     });
 });
 var app = builder.Build();
-
+app.MapHealthChecks("/health"); // <--- Endpoint para checagem de health
+// Edpoint para monitoramento
+app.MapHealthChecks("/health-details", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        var result = new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(e => new
+            {
+                name = e.Key,
+                status = e.Value.Status.ToString(),
+                description = e.Value.Description
+            })
+        };
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsJsonAsync(result);
+    }
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
