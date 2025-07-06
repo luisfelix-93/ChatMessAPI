@@ -95,7 +95,13 @@ app.MapHealthChecks("/health-details", new HealthCheckOptions
         await context.Response.WriteAsJsonAsync(result);
     }
 });
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.7
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint($"/swagger/{ConstantManager.version}/swagger.json", $"{ConstantManager.ChatMessageAPI} {ConstantManager.version}");
+    c.RoutePrefix = string.Empty; // Define a rota raiz para o Swagger
+});
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
